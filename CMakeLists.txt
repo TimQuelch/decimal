@@ -14,8 +14,8 @@ target_include_directories(
 target_compile_features(decimal INTERFACE cxx_std_17)
 
 # Add tests
-#enable_testing()
-#add_subdirectory(test)
+enable_testing()
+add_subdirectory(test)
 
 # Install
 include(GNUInstallDirs)
