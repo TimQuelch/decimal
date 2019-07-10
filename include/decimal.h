@@ -60,10 +60,12 @@ namespace decimal {
 
         constexpr decimal& operator*=(decimal rhs) {
             scaled_ *= rhs.scaled_;
+            scaled_ /= scalar_;
             return *this;
         }
 
         constexpr decimal& operator/=(decimal rhs) {
+            scaled_ *= scalar_;
             scaled_ /= rhs.scaled_;
             return *this;
         }
