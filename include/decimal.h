@@ -24,13 +24,16 @@ namespace decimal {
         T scaled_;
 
     public:
-        constexpr decimal() : scaled_{0} {}
+        constexpr decimal()
+            : scaled_{0} {}
         template <typename Integer, std::enable_if_t<std::is_integral<Integer>::value, int> = 0>
-        constexpr decimal(Integer value) : scaled_{static_cast<T>(value * scalar_)} {}
+        constexpr decimal(Integer value)
+            : scaled_{static_cast<T>(value * scalar_)} {}
 
         template <typename Floating,
                   std::enable_if_t<std::is_floating_point<Floating>::value, int> = 0>
-        constexpr decimal(Floating value) : scaled_{static_cast<T>(std::round(value * scalar_))} {}
+        constexpr decimal(Floating value)
+            : scaled_{static_cast<T>(std::round(value * scalar_))} {}
 
         template <typename T_>
         constexpr decimal(decimal<Digits, T_, Base> value)
