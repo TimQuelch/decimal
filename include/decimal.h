@@ -74,6 +74,7 @@ namespace decimal {
         friend constexpr decimal operator-(decimal lhs, decimal rhs) { return lhs -= rhs; }
         friend constexpr decimal operator*(decimal lhs, decimal rhs) { return lhs *= rhs; }
         friend constexpr decimal operator/(decimal lhs, decimal rhs) { return lhs /= rhs; }
+        friend constexpr decimal operator-(decimal value) { return decimal{0} - value; }
 
         friend constexpr bool operator==(decimal lhs, decimal rhs) {
             return lhs.scaled_ == rhs.scaled_;
