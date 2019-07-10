@@ -1,6 +1,10 @@
 from conans import ConanFile, tools, CMake
 
-class SeqslamBenchmarkConan(ConanFile):
+class DecimalConan(ConanFile):
+    name = "decimal"
+    version = "0.1"
+    license = "MIT"
+    url = "https://github.com/TimQuelch/decimal"
     generators = ("cmake_paths")
 
     def build_requirements(self):
