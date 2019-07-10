@@ -12,7 +12,7 @@ namespace decimal {
         static_assert(Digits >= 0);
 
     private:
-        static constexpr T compute_scalar() {
+        [[nodiscard]] static constexpr T compute_scalar() {
             T val = 1;
             for (int i = 0; i < Digits; i++) {
                 val *= Base;
@@ -26,6 +26,7 @@ namespace decimal {
     public:
         constexpr decimal()
             : scaled_{0} {}
+
         template <typename Integer, std::enable_if_t<std::is_integral<Integer>::value, int> = 0>
         constexpr decimal(Integer value)
             : scaled_{static_cast<T>(value * scalar_)} {}
@@ -48,8 +49,9 @@ namespace decimal {
             return static_cast<Numeric>(scaled_) / scalar_;
         }
 
-        static constexpr T scalar() { return scalar_; }
-        constexpr T scaled() const { return scaled_; }
+        [[nodiscard]] static constexpr T scalar() { return scalar_; }
+
+        [[nodiscard]] constexpr T scaled() const { return scaled_; }
 
         constexpr decimal& operator+=(decimal rhs) {
             scaled_ += rhs.scaled_;
@@ -73,22 +75,49 @@ namespace decimal {
             return *this;
         }
 
-        friend constexpr decimal operator+(decimal lhs, decimal rhs) { return lhs += rhs; }
-        friend constexpr decimal operator-(decimal lhs, decimal rhs) { return lhs -= rhs; }
-        friend constexpr decimal operator*(decimal lhs, decimal rhs) { return lhs *= rhs; }
-        friend constexpr decimal operator/(decimal lhs, decimal rhs) { return lhs /= rhs; }
-        friend constexpr decimal operator-(decimal value) { return decimal{0} - value; }
+        [[nodiscard]] friend constexpr decimal operator+(decimal lhs, decimal rhs) {
+            return lhs += rhs;
+        }
 
-        friend constexpr bool operator==(decimal lhs, decimal rhs) {
+        [[nodiscard]] friend constexpr decimal operator-(decimal lhs, decimal rhs) {
+            return lhs -= rhs;
+        }
+
+        [[nodiscard]] friend constexpr decimal operator*(decimal lhs, decimal rhs) {
+            return lhs *= rhs;
+        }
+
+        [[nodiscard]] friend constexpr decimal operator/(decimal lhs, decimal rhs) {
+            return lhs /= rhs;
+        }
+
+        [[nodiscard]] friend constexpr decimal operator-(decimal value) {
+            return decimal{0} - value;
+        }
+
+        [[nodiscard]] friend constexpr bool operator==(decimal lhs, decimal rhs) {
             return lhs.scaled_ == rhs.scaled_;
         }
-        friend constexpr bool operator!=(decimal lhs, decimal rhs) { return !(lhs == rhs); }
-        friend constexpr bool operator<(decimal lhs, decimal rhs) {
+
+        [[nodiscard]] friend constexpr bool operator!=(decimal lhs, decimal rhs) {
+            return !(lhs == rhs);
+        }
+
+        [[nodiscard]] friend constexpr bool operator<(decimal lhs, decimal rhs) {
             return lhs.scaled_ < rhs.scaled_;
         }
-        friend constexpr bool operator>(decimal lhs, decimal rhs) { return rhs < lhs; }
-        friend constexpr bool operator<=(decimal lhs, decimal rhs) { return !(lhs > rhs); }
-        friend constexpr bool operator>=(decimal lhs, decimal rhs) { return !(lhs < rhs); }
+
+        [[nodiscard]] friend constexpr bool operator>(decimal lhs, decimal rhs) {
+            return rhs < lhs;
+        }
+
+        [[nodiscard]] friend constexpr bool operator<=(decimal lhs, decimal rhs) {
+            return !(lhs > rhs);
+        }
+
+        [[nodiscard]] friend constexpr bool operator>=(decimal lhs, decimal rhs) {
+            return !(lhs < rhs);
+        }
     };
 } // namespace decimal
 
@@ -114,13 +143,13 @@ namespace std {
         static constexpr bool traps = std::numeric_limits<T>::traps;
         static constexpr bool tinyness_before = std::numeric_limits<T>::tinyness_before;
 
-        static constexpr T min() noexcept {
+        [[nodiscard]] static constexpr T min() noexcept {
             return std::numeric_limits<T>::min() / decimal::decimal<Digits, T, Base>::scalar();
         }
 
-        static constexpr T lowest() noexcept { return min(); }
+        [[nodiscard]] static constexpr T lowest() noexcept { return min(); }
 
-        static constexpr T max() noexcept {
+        [[nodiscard]] static constexpr T max() noexcept {
             return std::numeric_limits<T>::max() / decimal::decimal<Digits, T, Base>::scalar();
         }
     };
