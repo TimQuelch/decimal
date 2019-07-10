@@ -177,8 +177,11 @@ TEST_CASE("Values with the same digits can be added together", "[arithmetic]") {
     auto c = decimal<2>{-1.2};
 
     CHECK(a + b == decimal<2>{5.23});
+    CHECK(b + a == decimal<2>{5.23});
     CHECK(a + c == decimal<2>{0.03});
+    CHECK(c + a == decimal<2>{0.03});
     CHECK(a + b + c == decimal<2>{4.03});
+    CHECK(c + b + a == decimal<2>{4.03});
 
     a += b;
 
@@ -191,8 +194,91 @@ TEST_CASE("Values with the same digits can be added together", "[arithmetic]") {
     REQUIRE(c == decimal<2>{-1.2});
 }
 
-TEMPLATE_TEST_CASE(
-    "Numeric limits are appropriately set", "[misc]", int, unsigned, long, unsigned long) {
+TEST_CASE("Values with the same digits can be subtracted from each other", "[arithmetic]") {
+    auto a = decimal<2>{1.23};
+    auto b = decimal<2>{4};
+    auto c = decimal<2>{-1.2};
+
+    CHECK(a - b == decimal<2>{-2.77});
+    CHECK(b - a == decimal<2>{2.77});
+    CHECK(a - c == decimal<2>{2.43});
+    CHECK(c - a == decimal<2>{-2.43});
+    CHECK(a - b - c == decimal<2>{-1.57});
+    CHECK(c - b - a == decimal<2>{-6.43});
+
+    a -= b;
+
+    REQUIRE(a == decimal<2>{-2.77});
+    REQUIRE(b == decimal<2>{4});
+
+    a -= c;
+
+    REQUIRE(a == decimal<2>{-1.57});
+    REQUIRE(c == decimal<2>{-1.2});
+}
+
+TEST_CASE("Values with the same digits can be multiplied together", "[arithmetic]") {
+    auto a = decimal<2>{1.23};
+    auto b = decimal<2>{4};
+    auto c = decimal<2>{-1.2};
+
+    CHECK(a * b == decimal<2>{4.92});
+    CHECK(b * a == decimal<2>{4.92});
+    CHECK(a * c == decimal<2>{-1.47});
+    CHECK(c * a == decimal<2>{-1.47});
+    CHECK(a * b * c == decimal<2>{-5.90});
+    CHECK(c * b * a == decimal<2>{-5.90});
+
+    a *= b;
+
+    REQUIRE(a == decimal<2>{4.92});
+    REQUIRE(b == decimal<2>{4});
+
+    a *= c;
+
+    REQUIRE(a == decimal<2>{-5.90});
+    REQUIRE(c == decimal<2>{-1.2});
+}
+
+TEST_CASE("Values with the same digits can be divided by each other", "[arithmetic]") {
+    auto a = decimal<2>{1.23};
+    auto b = decimal<2>{4};
+    auto c = decimal<2>{-1.2};
+
+    CHECK(a / b == decimal<2>{0.30});
+    CHECK(b / a == decimal<2>{3.25});
+    CHECK(a / c == decimal<2>{-1.02});
+    CHECK(c / a == decimal<2>{-0.97});
+    CHECK(a / b / c == decimal<2>{-0.25});
+    CHECK(c / b / a == decimal<2>{-0.24});
+
+    a /= b;
+
+    REQUIRE(a == decimal<2>{0.30});
+    REQUIRE(b == decimal<2>{4});
+
+    a /= c;
+
+    REQUIRE(a == decimal<2>{-0.25});
+    REQUIRE(c == decimal<2>{-1.2});
+}
+
+TEST_CASE("Values can be negated", "[arithmetic]") {
+    auto a = decimal<2>{1.23};
+    auto b = decimal<2>{4};
+    auto c = decimal<2>{-1.2};
+
+    CHECK(-a == decimal<2>{-1.23});
+    CHECK(-b == decimal<2>{-4});
+    CHECK(-c == decimal<2>{1.2});
+}
+
+TEMPLATE_TEST_CASE("Numeric limits are appropriately set",
+                   "[misc]",
+                   int,
+                   unsigned,
+                   long,
+                   unsigned long) {
     using d = decimal<2, TestType>;
     using nl = std::numeric_limits<d>;
     using nlBase = std::numeric_limits<TestType>;
