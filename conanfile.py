@@ -5,6 +5,7 @@ class DecimalConan(ConanFile):
     version = "0.1"
     license = "MIT"
     url = "https://github.com/TimQuelch/decimal"
+    exports_sources = ("*", "!build")
     generators = ("cmake_paths")
 
     def build_requirements(self):
@@ -18,7 +19,7 @@ class DecimalConan(ConanFile):
         return cmake
 
     def build(self):
-        cmake = _configure_cmake(self)
+        cmake = self._configure_cmake()
         cmake.build()
         if tools.get_env("CONAN_RUN_TESTS", True):
             cmake.test()

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(decimal VERSION 0.1.0 LANGUAGES CXX)
 
-option(BUILD_TESTS "Build test" ON)
+option(DECIMAL_ENABLE_TESTING "Enable unit tests" ON)
 
 # Include conan files if they exist
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake OPTIONAL)
@@ -19,7 +19,7 @@ target_include_directories(
 target_compile_features(decimal INTERFACE cxx_std_17)
 
 # Add tests
-if(${BUILD_TESTS})
+if(${DECIMAL_ENABLE_TESTING})
     enable_testing()
     add_subdirectory(test)
 endif()
