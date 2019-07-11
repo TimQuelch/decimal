@@ -1,5 +1,7 @@
 #include <catch2/catch.hpp>
 
+#include <sstream>
+
 #include "decimal.h"
 
 using namespace decimal;
@@ -271,6 +273,14 @@ TEST_CASE("Values can be negated", "[arithmetic]") {
     CHECK(-a == decimal<2>{-1.23});
     CHECK(-b == decimal<2>{-4});
     CHECK(-c == decimal<2>{1.2});
+}
+
+TEST_CASE("Values can be inserted into streams", "[misc]") {
+    std::ostringstream ss{};
+    ss << decimal<0>{5.2} << " " << decimal<1>{7.0} << " " << decimal<2>{4.06} << " "
+       << decimal<3>{4.06} << " " << decimal<5>{0} << " " << decimal<2>{-3.45} << " "
+       << decimal<2>{-0.2};
+    REQUIRE(ss.str() == "5 7.0 4.06 4.060 0.00000 -3.45 -0.20");
 }
 
 TEMPLATE_TEST_CASE("Numeric limits are appropriately set",

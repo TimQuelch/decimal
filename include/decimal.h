@@ -2,7 +2,9 @@
 #define DECIMAL_H
 
 #include <cmath>
+#include <iomanip>
 #include <limits>
+#include <ostream>
 #include <type_traits>
 
 namespace decimal {
@@ -117,6 +119,18 @@ namespace decimal {
 
         [[nodiscard]] friend constexpr bool operator>=(decimal lhs, decimal rhs) {
             return !(lhs < rhs);
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, decimal value) {
+            if constexpr (Digits == 0) {
+                return os << value.scaled();
+            } else {
+                if (value.scaled() < 0) {
+                    os << "-";
+                }
+                return os << std::abs(value.scaled() / value.scalar()) << "." << std::setw(Digits)
+                          << std::setfill('0') << std::abs(value.scaled() % value.scalar());
+            }
         }
     };
 } // namespace decimal
