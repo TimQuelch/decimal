@@ -2,7 +2,7 @@ from conans import ConanFile, tools, CMake
 
 class DecimalConan(ConanFile):
     name = "decimal"
-    version = "0.1"
+    version = "1.0.0"
     license = "MIT"
     url = "https://github.com/TimQuelch/decimal"
     exports_sources = ("*", "!build")
